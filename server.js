@@ -489,7 +489,7 @@ app.get('/api/media-categories', (req, res) => {
 });
 
 // Health check (used by hosts like Render)
-app.get('/api/health', (req, res) => res.json({ ok: true, time: new Date().ISOString() }));
+app.get('/api/health', (req, res) => res.json({ ok: true, time: new Date().toISOString() }));
 
 // Visit tracking (counts once per visitor per day via cookie)
 app.post('/api/track', trackLimiter, (req, res) => {

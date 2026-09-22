@@ -27,8 +27,10 @@ const JWT_SECRET = process.env.JWT_SECRET || 'spe-oou-dev-secret-change-me';
 if (!process.env.JWT_SECRET) console.warn('[warn] JWT_SECRET not set — using dev secret. Set JWT_SECRET in production.');
 const SESSION_HOURS = 2; // inactivity timeout
 const ROOT = __dirname;
-const DATA_DIR = path.join(ROOT, 'data');
-const UPLOAD_DIR = path.join(ROOT, 'uploads');
+// DATA_DIR / UPLOAD_DIR can point at a persistent disk (e.g. on Render).
+// Defaults keep everything inside the project folder.
+const DATA_DIR = process.env.DATA_DIR || path.join(ROOT, 'data');
+const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(ROOT, 'uploads');
 const PUBLIC_DIR = path.join(ROOT, 'public');
 const SUBDIRS = ['photos', 'videos', 'posters', 'profiles', 'timeline', 'events', 'docs', 'misc', 'thumbs'];
 
@@ -485,6 +487,9 @@ app.get('/api/media', (req, res) => {
 app.get('/api/media-categories', (req, res) => {
   res.json(all("SELECT DISTINCT category FROM media WHERE published = 1 AND category <> '' ORDER BY category"));
 });
+
+// Health check (used by hosts like Render)
+app.get('/api/health', (req, res) => res.json({ ok: true, time: new Date().ISOString() }));
 
 // Visit tracking (counts once per visitor per day via cookie)
 app.post('/api/track', trackLimiter, (req, res) => {

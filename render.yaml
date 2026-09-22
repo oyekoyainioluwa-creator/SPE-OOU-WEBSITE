@@ -1,0 +1,28 @@
+# SPE OOU Website — Render Blueprint (one-click deploy)
+# In Render: New + → Blueprint → connect this repo. Render will ask for the
+# secrets below, then build and launch everything automatically.
+services:
+  - type: web
+    name: spe-oou-website
+    runtime: node
+    plan: starter # Disks (needed to keep data/uploads forever) require a paid plan
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: ADMIN_EMAIL
+        sync: false # you type this in Render dashboard (your email)
+      - key: ADMIN_PASSWORD
+        sync: false # you type this in Render dashboard (strong password)
+      - key: JWT_SECRET
+        generateValue: true # Render auto-generates a secure secret
+      - key: DATA_DIR
+        value: /var/spe-data/data
+      - key: UPLOAD_DIR
+        value: /var/spe-data/uploads
+    disk:
+      name: spe-data
+      mountPath: /var/spe-data
+      sizeGB: 3

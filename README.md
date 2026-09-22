@@ -54,9 +54,18 @@ If not set, the app creates a default admin on first run:
 - Dashboard → **Download database backup** exports `data/spe.db`.
 - Back up the `uploads/` folder to preserve photos/videos/documents.
 
-### Deploying
+### Deploying on Render (recommended)
 
-Works on any Node host (Render, Railway, VPS…). Use a **persistent disk/volume** mounted at `data/` and `uploads/` so content survives redeploys, and set `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` as environment variables.
+The repo includes a `render.yaml` Blueprint for one-click deploy:
+
+1. Push this code to GitHub (merge the working branch into `main`).
+2. Go to **render.com** → **New +** → **Blueprint** → connect the repo.
+3. Render reads `render.yaml` and asks you to fill in `ADMIN_EMAIL` and `ADMIN_PASSWORD` (it auto-generates `JWT_SECRET`).
+4. Click **Deploy**. You get a public URL like `https://spe-oou-website.onrender.com`.
+
+The Blueprint provisions a **persistent disk** at `/var/spe-data` holding both the database (`DATA_DIR`) and uploads (`UPLOAD_DIR`), so content survives redeploys. Note: Render disks require a paid instance type (Starter ≈ $6/mo + ~$0.25/GB/mo). On the free plan (no disk), the site works but uploaded content resets on every restart — not recommended for production.
+
+Works on other Node hosts too (Railway, VPS…) — just make sure `data/` and `uploads/` (or your `DATA_DIR`/`UPLOAD_DIR`) live on persistent storage, and set `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` as environment variables.
 
 ## Project structure
 

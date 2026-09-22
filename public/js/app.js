@@ -277,7 +277,9 @@ function personCard(p, isLeader) {
     p.twitter ? `<a href="${esc(p.twitter)}" target="_blank" rel="noopener" title="X / Twitter">𝕏</a>` : '',
     p.email ? `<a href="mailto:${esc(p.email)}" title="Email">✉️</a>` : ''
   ].join('');
+  const adminView = isLeader ? 'leaders' : 'executives';
   return `<div class="person reveal">
+    <a class="card-edit" href="/admin#${adminView}" title="Edit in dashboard">✏️ Edit</a>
     <div class="photo">${photo}<span class="pos-chip">${esc(p.position)}</span></div>
     <div class="body">
       <h3>${esc(p.name)}</h3>
@@ -315,6 +317,7 @@ function paintEvents() {
   box.innerHTML = rows.map(ev => {
     const d = ev.date ? new Date(ev.date + 'T12:00:00') : null;
     return `<article class="event-card reveal in">
+      <a class="card-edit" href="/admin#events" title="Edit in dashboard">✏️ Edit</a>
       <div class="event-poster">
         ${ev.poster ? `<img src="${esc(ev.poster)}" alt="${esc(ev.title)}" loading="lazy">` : `<span class="no-poster">🛢️</span>`}
         ${ev.category_name ? `<span class="event-cat" style="background:${esc(ev.category_color || '#e63946')}">${esc(ev.category_name)}</span>` : ''}
@@ -355,6 +358,7 @@ window.openEvent = async function (id) {
         </div>
         <p class="ev-desc">${esc(ev.description || 'Details coming soon.')}</p>
         ${ev.registration_link && ev.computed_status === 'upcoming' ? `<div style="margin-top:18px"><a class="btn btn-primary" href="${esc(ev.registration_link)}" target="_blank" rel="noopener">Register for this event →</a></div>` : ''}
+        ${ADMIN ? `<div style="margin-top:12px"><a class="btn btn-outline btn-sm" href="/admin#events">✏️ Edit this event</a></div>` : ''}
         ${ev.media && ev.media.length ? `<h3 style="font-family:var(--font-d);margin:24px 0 4px">📸 Event moments (${ev.media.length})</h3>
           <div class="ev-media">${ev.media.slice(0, 12).map((m, i) => m.filetype === 'video'
             ? `<video src="${esc(m.filepath)}" preload="metadata" data-evm="${i}"></video>`
@@ -491,8 +495,15 @@ async function loadGallery(append) {
     const data = await api('/api/media?' + params.toString());
     gal.pages = data.pages;
     const box = $('#masonry');
+    if (!append && document.body.classList.contains('edit-mode') && ADMIN) {
+      const tile = document.createElement('div');
+      tile.className = 'm-item add-tile';
+      tile.innerHTML = '<span>＋</span>Add photos / videos';
+      tile.addEventListener('click', openQuickUpload);
+      box.appendChild(tile);
+    }
     if (!append && !data.items.length) {
-      box.innerHTML = '<p class="empty" style="column-span:all">No moments found. Moments uploaded from the admin dashboard will appear here. 📸</p>';
+      box.insertAdjacentHTML('beforeend', '<p class="empty" style="column-span:all">No moments found. Moments uploaded from the admin dashboard will appear here. 📸</p>');
     }
     data.items.forEach(m => {
       const idx = gal.items.length; gal.items.push(m);
@@ -506,7 +517,7 @@ async function loadGallery(append) {
       el.innerHTML += `<span class="type-tag">${label}</span>
         <div class="ov"><b>${esc(m.title || 'Untitled')}</b><small>${esc(m.event_title || '')}</small></div>`;
       el.addEventListener('click', () => openLightbox(gal.items.map(x => ({
-        src: x.filepath, type: x.filetype === 'video' ? 'video' : 'photo',
+        id: x.id, src: x.filepath, type: x.filetype === 'video' ? 'video' : 'photo',
         cap: (x.title || 'Untitled') + (x.event_title ? ' • ' + x.event_title : '')
       })), idx));
       box.appendChild(el);
@@ -531,7 +542,28 @@ function paintLb() {
     ? `<video src="${esc(it.src)}" controls autoplay playsinline style="max-height:74vh"></video>`
     : `<img src="${esc(it.src)}" alt="">`;
   $('#lbCap').textContent = (it.cap || '') + `  (${lbIdx + 1}/${lbItems.length})`;
+  const showAdmin = ADMIN && it.id;
+  $('#lbEdit').classList.toggle('hidden', !showAdmin);
+  $('#lbDel').classList.toggle('hidden', !showAdmin);
 }
+$('#lbEdit').addEventListener('click', e => { e.stopPropagation(); location.href = '/admin#media'; });
+$('#lbDel').addEventListener('click', async e => {
+  e.stopPropagation();
+  const it = lbItems[lbIdx];
+  if (!it || !it.id) return;
+  if (!confirm(`Permanently delete "${it.cap.split('  (')[0]}" from the gallery?`)) return;
+  try {
+    const r = await fetch('/api/admin/media/' + it.id, { method: 'DELETE' });
+    if (r.status === 401) { toast('Session expired — please log in again'); return; }
+    if (!r.ok) throw new Error('Delete failed');
+    gal.items = gal.items.filter(x => x.id !== it.id);
+    lbItems.splice(lbIdx, 1);
+    toast('Deleted 🗑️');
+    if (!lbItems.length) closeLb();
+    else { lbIdx = Math.min(lbIdx, lbItems.length - 1); paintLb(); }
+    reloadGallery();
+  } catch (err) { toast('Could not delete item', true); }
+});
 function lbNav(d) { lbIdx = (lbIdx + d + lbItems.length) % lbItems.length; paintLb(); }
 $('#lbPrev').addEventListener('click', e => { e.stopPropagation(); lbNav(-1); });
 $('#lbNext').addEventListener('click', e => { e.stopPropagation(); lbNav(1); });
@@ -554,3 +586,113 @@ document.addEventListener('keydown', e => {
   }
   if (e.key === 'Escape' && !$('#eventModal').classList.contains('hidden')) closeEvent();
 });
+
+/* ============ Admin edit mode (visible ONLY when logged in) ============ */
+let ADMIN = false;
+const EDIT_VIEWS = {
+  home: 'settings', about: 'about', stats: 'achievements', history: 'history',
+  executives: 'executives', leaders: 'leaders', events: 'events', gallery: 'media',
+  achievements: 'achievements', community: 'settings', documents: 'documents', contact: 'settings'
+};
+
+async function checkAdmin() {
+  try {
+    const r = await fetch('/api/auth/me');
+    if (!r.ok) return;
+    ADMIN = true;
+    if (localStorage.getItem('spe_edit_mode') !== 'off') document.body.classList.add('edit-mode');
+    renderAdminBar();
+    applyEditBadges();
+    if (typeof gal !== 'undefined') reloadGallery(); // show the "＋ Add" tile
+  } catch (e) { /* not logged in — stay in visitor mode */ }
+}
+
+function renderAdminBar() {
+  if ($('#adminBar')) return;
+  const bar = document.createElement('div');
+  bar.id = 'adminBar';
+  bar.innerHTML = `<span class="ab-label">🔓 ADMIN</span>
+    <button class="ab-toggle" id="abToggle" title="Show/hide edit buttons"></button>
+    <button id="abUpload" title="Upload photos/videos">＋ Upload</button>
+    <a href="/admin" title="Open dashboard">📊 Dashboard</a>
+    <button id="abLogout" title="Log out">Logout</button>`;
+  document.body.appendChild(bar);
+  const tgl = $('#abToggle');
+  const paintTgl = () => {
+    const on = document.body.classList.contains('edit-mode');
+    tgl.textContent = on ? '✏️ Edit: ON' : '✏️ Edit: OFF';
+    tgl.classList.toggle('on', on);
+  };
+  paintTgl();
+  tgl.addEventListener('click', () => {
+    const on = document.body.classList.toggle('edit-mode');
+    localStorage.setItem('spe_edit_mode', on ? 'on' : 'off');
+    paintTgl(); reloadGallery();
+  });
+  $('#abUpload').addEventListener('click', openQuickUpload);
+  $('#abLogout').addEventListener('click', async () => {
+    await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+    location.reload();
+  });
+}
+
+function applyEditBadges() {
+  for (const [secId, view] of Object.entries(EDIT_VIEWS)) {
+    const sec = document.getElementById(secId);
+    if (!sec || sec.querySelector(':scope > .edit-badge, .section-head > .edit-badge')) continue;
+    const a = document.createElement('a');
+    a.className = 'edit-badge';
+    a.href = '/admin#' + view;
+    a.title = 'Edit this section in the dashboard';
+    a.textContent = '✏️';
+    const head = sec.querySelector('.section-head');
+    if (head) head.appendChild(a);
+    else if (secId === 'home') { a.classList.add('hero-edit'); sec.appendChild(a); }
+    else sec.appendChild(a);
+  }
+}
+
+/* ----- Quick upload modal ----- */
+function openQuickUpload() {
+  if (!ADMIN) return;
+  $('#quEvent').innerHTML = '<option value="">— No event —</option>' +
+    EVENTS.map(e => `<option value="${e.id}">${esc(e.title)}</option>`).join('');
+  $('#quForm').reset();
+  $('#quProg').classList.remove('show');
+  $('#quModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function closeQuickUpload() { $('#quModal').classList.add('hidden'); document.body.style.overflow = ''; }
+$('#quClose').addEventListener('click', closeQuickUpload);
+$('#quModal').addEventListener('click', e => { if (e.target.id === 'quModal') closeQuickUpload(); });
+$('#quForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const files = $('#quFiles').files;
+  if (!files.length) { toast('Choose at least one file', true); return; }
+  const btn = $('#quSubmit'), prog = $('#quProg'), bar = prog.querySelector('i');
+  prog.classList.add('show'); bar.style.width = '25%';
+  btn.disabled = true; btn.textContent = 'Uploading…';
+  const fd = new FormData();
+  for (const f of files) fd.append('files', f);
+  fd.append('filetype', $('#quType').value);
+  fd.append('event_id', $('#quEvent').value);
+  fd.append('category', $('#quCat').value.trim());
+  try {
+    const r = await fetch('/api/admin/media/upload', { method: 'POST', body: fd });
+    if (r.status === 401) throw new Error('Session expired — please log in again');
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Upload failed');
+    const ok = d.results.filter(x => x.ok).length;
+    const fail = d.results.filter(x => !x.ok);
+    bar.style.width = '100%';
+    toast(ok ? `Uploaded ${ok} file(s) ✓` : 'Upload failed', !ok);
+    if (fail.length) console.warn('Failed uploads:', fail);
+    closeQuickUpload();
+    gal.page = 1; gal.items = []; $('#masonry').innerHTML = '';
+    loadGallery(false);
+  } catch (err) { toast(err.message, true); }
+  finally { btn.disabled = false; btn.textContent = 'Upload to gallery'; }
+});
+
+// boot admin check alongside the site
+document.addEventListener('DOMContentLoaded', () => setTimeout(checkAdmin, 400));

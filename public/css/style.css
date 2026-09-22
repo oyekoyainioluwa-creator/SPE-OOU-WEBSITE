@@ -348,3 +348,38 @@ footer{background:#04090f;color:#9fb0c9;padding:64px 0 0}
   .lb-prev{left:6px}.lb-next{right:6px}
   .ev-body{padding:22px}
 }
+
+/* ============ ADMIN EDIT MODE ============ */
+#adminBar{position:fixed;bottom:18px;right:18px;z-index:1400;display:flex;align-items:center;gap:8px;background:rgba(6,13,28,.92);backdrop-filter:blur(14px);border:1px solid rgba(244,167,44,.45);border-radius:999px;padding:8px 8px 8px 16px;box-shadow:0 16px 44px -10px rgba(0,0,0,.6);font-family:var(--font-d);animation:barIn .4s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes barIn{from{transform:translateY(20px);opacity:0}}
+#adminBar .ab-label{color:var(--gold);font-weight:800;font-size:.78rem;letter-spacing:1px;white-space:nowrap}
+#adminBar button,#adminBar a{border:1px solid var(--glass-line);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:8px 14px;font-size:.76rem;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap;transition:.2s;font-family:var(--font-d)}
+#adminBar button:hover,#adminBar a:hover{background:var(--red);border-color:var(--red)}
+#adminBar .ab-toggle.on{background:rgba(22,163,74,.25);border-color:var(--green)}
+.edit-badge{display:none;position:absolute;top:6px;right:6px;z-index:5;background:var(--gold);color:#231600;font-size:.8rem;font-weight:800;text-decoration:none;width:38px;height:38px;border-radius:50%;place-items:center;box-shadow:0 8px 22px -6px rgba(0,0,0,.5);transition:.2s}
+body.edit-mode .edit-badge{display:grid}
+.edit-badge:hover{transform:scale(1.12) rotate(-8deg)}
+.section-head{position:relative}
+.hero-edit{position:absolute;top:90px;right:18px;z-index:5}
+body.edit-mode .section-head{outline:2px dashed rgba(244,167,44,.0);outline-offset:8px;border-radius:8px}
+.qu-field{margin-bottom:13px}
+.qu-field label{display:block;font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.qu-field input,.qu-field select{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-size:.9rem;font-family:var(--font-b);outline:none;background:#fff}
+.qu-field input:focus,.qu-field select:focus{border-color:var(--red)}
+.qu-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.qu-progress{height:8px;background:#e5eaf2;border-radius:8px;overflow:hidden;display:none;margin-top:6px}
+.qu-progress.show{display:block}
+.qu-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .2s}
+.add-tile{border:2px dashed rgba(244,167,44,.6)!important;background:rgba(244,167,44,.07)!important;min-height:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--gold);font-family:var(--font-d);font-weight:700;transition:.25s}
+.add-tile:hover{background:rgba(244,167,44,.16)!important;transform:scale(1.02)}
+.add-tile span{font-size:2.2rem}
+.lb-admin{top:74px}
+#lbEdit{right:18px}
+#lbDel{right:74px;background:rgba(230,57,70,.25)}
+.card-edit{position:absolute;bottom:12px;right:12px;z-index:3;display:none;background:var(--gold);color:#231600;font-size:.72rem;font-weight:800;text-decoration:none;padding:6px 13px;border-radius:999px;box-shadow:0 6px 16px -4px rgba(0,0,0,.5)}
+body.edit-mode .card-edit{display:inline-block}
+.event-card,.person{position:relative}
+@media(max-width:640px){
+  #adminBar{bottom:12px;right:12px;left:12px;justify-content:center;flex-wrap:wrap;border-radius:20px;padding:10px}
+  .qu-row{grid-template-columns:1fr}
+}

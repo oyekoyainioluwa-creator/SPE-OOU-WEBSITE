@@ -31,7 +31,7 @@ async function boot() {
     $('#adminName').textContent = user.name + ' • ' + user.email;
     $('#loginView').classList.add('hidden');
     $('#appView').classList.remove('hidden');
-    showView('dashboard');
+    showView(viewFromHash() || 'dashboard');
   } catch (e) { showLogin(); }
 }
 function showLogin() {
@@ -70,7 +70,13 @@ $$('#sideNav button').forEach(b => b.addEventListener('click', () => {
   $('#sidebar').classList.remove('open');
   showView(b.dataset.view);
 }));
+function viewFromHash() {
+  const v = (location.hash || '').replace('#', '');
+  return TITLES[v] ? v : null;
+}
 function showView(v) {
+  if (!TITLES[v]) v = 'dashboard';
+  if (location.hash !== '#' + v) history.replaceState(null, '', '#' + v);
   $('#viewTitle').textContent = TITLES[v] || v;
   $$('#sideNav button').forEach(x => x.classList.toggle('active', x.dataset.view === v));
   ({ dashboard: vDashboard, about: vAbout, history: vHistory, executives: vExecs, leaders: vLeaders, events: vEvents, media: vMedia, achievements: vAchievements, documents: vDocs, settings: vSettings, account: vAccount })[v]();
@@ -736,4 +742,8 @@ async function vAccount() {
   });
 }
 
+window.addEventListener('hashchange', () => {
+  const v = viewFromHash();
+  if (v && !$('#appView').classList.contains('hidden')) showView(v);
+});
 document.addEventListener('DOMContentLoaded', boot);

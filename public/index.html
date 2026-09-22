@@ -231,12 +231,37 @@
   <div class="footer-bottom"><p>© <span id="year"></span> SPE OOU — Society of Petroleum Engineers, Olabisi Onabanjo University Student Chapter. All rights reserved.</p></div>
 </footer>
 
+<!-- ============ QUICK UPLOAD (admin) ============ -->
+<div id="quModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Quick upload">
+  <div class="modal-card">
+    <button class="modal-close" id="quClose" aria-label="Close">✕</button>
+    <div class="ev-body">
+      <h2>⬆️ Quick upload</h2>
+      <p style="color:var(--muted);font-size:.9rem">Add photos or videos to the gallery instantly. They appear on the site immediately.</p>
+      <form id="quForm" style="margin-top:16px">
+        <div class="qu-field"><label>Files * (up to 20 — photos & videos)</label>
+          <input type="file" id="quFiles" multiple accept="image/*,video/*" required></div>
+        <div class="qu-row">
+          <div class="qu-field"><label>Type</label>
+            <select id="quType"><option value="photo">📷 Photo</option><option value="video">🎬 Video</option><option value="poster">🖼️ Poster</option><option value="flyer">📣 Flyer</option></select></div>
+          <div class="qu-field"><label>Event (optional)</label><select id="quEvent"><option value="">— No event —</option></select></div>
+        </div>
+        <div class="qu-field"><label>Category (optional)</label><input id="quCat" placeholder="e.g. NAICE 2026"></div>
+        <div class="qu-progress" id="quProg"><i></i></div>
+        <button type="submit" class="btn btn-primary" id="quSubmit" style="width:100%;justify-content:center;margin-top:14px">Upload to gallery</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- ============ LIGHTBOX ============ -->
 <div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Media viewer">
   <button class="lb-btn lb-close" id="lbClose" aria-label="Close">✕</button>
   <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous">‹</button>
   <button class="lb-btn lb-next" id="lbNext" aria-label="Next">›</button>
   <button class="lb-btn lb-full" id="lbFull" aria-label="Fullscreen">⛶</button>
+  <button class="lb-btn lb-admin hidden" id="lbEdit" aria-label="Edit in dashboard" title="Edit in dashboard">✏️</button>
+  <button class="lb-btn lb-admin hidden" id="lbDel" aria-label="Delete" title="Delete this item">🗑️</button>
   <div class="lb-stage" id="lbStage"></div>
   <p class="lb-cap" id="lbCap"></p>
 </div>

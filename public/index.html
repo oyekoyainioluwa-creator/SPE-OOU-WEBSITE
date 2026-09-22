@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPE OOU — Society of Petroleum Engineers, Olabisi Onabanjo University</title>
+<meta name="description" content="Official website of the Society of Petroleum Engineers, Olabisi Onabanjo University Student Chapter. Explore our history, people, events, gallery and achievements.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23e63946' d='M32 2C32 2 12 26 12 40a20 20 0 0 0 40 0C52 26 32 2 32 2z'/%3E%3Cpath fill='%23fff' d='M32 22c0 0-9 11-9 18a9 9 0 0 0 18 0c0-7-9-18-9-18z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div id="loader" aria-hidden="true"><div class="loader-drop"></div><p>SPE OOU</p></div>
+
+<div id="announce" class="announce hidden"></div>
+
+<!-- ============ NAV ============ -->
+<header id="navbar">
+  <nav class="nav-inner">
+    <a href="#home" class="brand" data-scroll>
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64"><path fill="#e63946" d="M32 2C32 2 12 26 12 40a20 20 0 0 0 40 0C52 26 32 2 32 2z"/><path fill="#fff" d="M32 22c0 0-9 11-9 18a9 9 0 0 0 18 0c0-7-9-18-9-18z"/></svg>
+      </span>
+      <span class="brand-text"><strong>SPE OOU</strong><small>Energy • Leadership • Community</small></span>
+    </a>
+    <button id="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul id="navlinks">
+      <li><a href="#home" data-scroll class="active">Home</a></li>
+      <li><a href="#about" data-scroll>About</a></li>
+      <li><a href="#history" data-scroll>History</a></li>
+      <li><a href="#executives" data-scroll>Executives</a></li>
+      <li><a href="#events" data-scroll>Events</a></li>
+      <li><a href="#gallery" data-scroll>Gallery</a></li>
+      <li><a href="#achievements" data-scroll>Achievements</a></li>
+      <li><a href="#documents" data-scroll>Documents</a></li>
+      <li><a href="#contact" data-scroll>Contact</a></li>
+    </ul>
+  </nav>
+  <div class="scroll-progress"><span id="scrollProgress"></span></div>
+</header>
+
+<main>
+<!-- ============ HERO ============ -->
+<section id="home" class="hero">
+  <canvas id="particles" aria-hidden="true"></canvas>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="geo-layers" aria-hidden="true">
+    <div class="geo-layer l1"></div><div class="geo-layer l2"></div><div class="geo-layer l3"></div><div class="geo-layer l4"></div>
+  </div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow reveal" id="heroEyebrow">SOCIETY OF PETROLEUM ENGINEERS • OLABISI ONABANJO UNIVERSITY</p>
+    <h1 class="hero-title reveal" id="heroTitle">WELCOME, DEAR SPE OOU MEMBER 👋</h1>
+    <p class="hero-playful reveal" id="heroPlayful">Where energy meets ideas, opportunities meet people, and somehow… meetings still happen.</p>
+    <p class="hero-sub reveal" id="heroSub">Explore our chapter, meet our people, relive our events, and discover what's next.</p>
+    <div class="hero-btns reveal">
+      <a href="#about" data-scroll class="btn btn-primary">Explore SPE OOU <span aria-hidden="true">→</span></a>
+      <a href="#events" data-scroll class="btn btn-ghost">Our Events</a>
+    </div>
+    <div class="hero-chips reveal" id="heroChips"></div>
+  </div>
+  <div class="seismic" aria-hidden="true"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path id="seismicPath" d=""/></svg></div>
+  <a href="#about" data-scroll class="scroll-hint" aria-label="Scroll down"><span></span></a>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="section light">
+  <div class="container">
+    <div class="section-head reveal"><span class="kicker">Who we are</span><h2>ABOUT SPE OOU</h2><div class="bar"><i></i></div></div>
+    <div class="about-grid">
+      <div class="about-main reveal">
+        <div class="about-media" id="aboutMedia"></div>
+        <p class="lead" id="aboutWhat"></p>
+        <div class="mv-grid">
+          <div class="mv-card"><h3>🎯 Our Mission</h3><p id="aboutMission"></p></div>
+          <div class="mv-card"><h3>🔭 Our Vision</h3><p id="aboutVision"></p></div>
+        </div>
+      </div>
+      <aside class="about-side">
+        <div class="founded-card reveal"><span class="founded-year" id="aboutYear">—</span><span class="founded-label">Founded</span><p id="aboutHistoryShort"></p></div>
+        <div class="tabs reveal">
+          <div class="tab-btns" role="tablist">
+            <button class="tab-btn active" data-tab="objectives">Objectives</button>
+            <button class="tab-btn" data-tab="activities">Activities</button>
+            <button class="tab-btn" data-tab="industry">Industry</button>
+          </div>
+          <div class="tab-panel active" id="tab-objectives"></div>
+          <div class="tab-panel" id="tab-activities"></div>
+          <div class="tab-panel" id="tab-industry"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section id="stats" class="stats-band">
+  <div class="seismic top" aria-hidden="true"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path class="seismic-path-alt" d=""/></svg></div>
+  <div class="container stats-grid" id="statsGrid"></div>
+</section>
+
+<!-- ============ HISTORY ============ -->
+<section id="history" class="section dark">
+  <div class="container">
+    <div class="section-head reveal"><span class="kicker">Our journey</span><h2>CHAPTER HISTORY</h2><div class="bar"><i></i></div>
+    <p class="section-sub">From a bold idea to a thriving energy community — explore the story of SPE OOU.</p></div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ============ EXECUTIVES ============ -->
+<section id="executives" class="section light">
+  <div class="container">
+    <div class="section-head reveal"><span class="kicker">Leadership</span><h2 id="execTitle">MEET THE 2026/2027 EXECUTIVES</h2><div class="bar"><i></i></div>
+    <p class="section-sub">The team steering the chapter this session.</p></div>
+    <div class="cards-grid" id="execGrid"></div>
+  </div>
+</section>
+
+<!-- ============ PAST LEADERS ============ -->
+<section id="leaders" class="section dark soft">
+  <div class="container">
+    <div class="section-head reveal"><span class="kicker">Legacy</span><h2 id="leadersTitle">THE PEOPLE WHO BUILT THE CHAPTER</h2><div class="bar"><i></i></div>
+    <p class="section-sub">Honouring the leaders whose sweat and vision built SPE OOU.</p></div>
+    <div class="cards-grid" id="leadersGrid"></div>
+  </div>
+</section>
+
+<!-- ============ EVENTS ============ -->
+<section id="events" class="section light">
+  <div class="container">
+    <div class="section-head reveal"><span class="kicker">What's happening</span><h2>EVENTS</h2><div class="bar"><i></i></div></div>
+    <div class="event-tabs reveal">
+      <button class="event-tab active" data-filter="upcoming">⚡ Upcoming Events <span class="count" id="upCount"></span></button>
+      <button class="event-tab" data-filter="past">📚 Past Events <span class="count" id="pastCount"></span></button>
+    </div>
+    <div class="events-grid" id="eventsGrid"></div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section id="gallery" class="section dark">
+  <div class="container">
+    <div class="section-head reveal"><span class="kicker">Digital archive</span><h2 id="galleryTitle">SPE OOU MOMENTS</h2><div class="bar"><i></i></div>
+    <p class="section-sub">A living archive of our events, trips, victories and memories.</p></div>
+    <div class="gallery-toolbar reveal">
+      <div class="seg" role="tablist">
+        <button class="seg-btn active" data-group="all">All</button>
+        <button class="seg-btn" data-group="photos">📷 Photos</button>
+        <button class="seg-btn" data-group="videos">🎬 Videos</button>
+      </div>
+      <select id="galEvent" aria-label="Filter by event"><option value="">All events</option></select>
+      <select id="galCategory" aria-label="Filter by category"><option value="">All categories</option></select>
+      <input id="galSearch" type="search" placeholder="🔍 Search moments…" aria-label="Search gallery">
+    </div>
+    <p class="gallery-meta" id="galleryMeta"></p>
+    <div class="masonry" id="masonry"></div>
+    <div class="center"><button id="loadMore" class="btn btn-ghost hidden">Load more moments</button></div>
+  </div>
+</section>
+
+<!-- ============ ACHIEVEMENTS ============ -->
+<section id="achievements" class="section light">
+  <div class="container">
+    <div class="section-head reveal"><span class="kicker">Track record</span><h2>ACHIEVEMENTS</h2><div class="bar"><i></i></div>
+    <p class="section-sub">Milestones we're proud of — and we're just getting started.</p></div>
+    <div class="ach-grid" id="achGrid"></div>
+  </div>
+</section>
+
+<!-- ============ COMMUNITY ============ -->
+<section id="community" class="community">
+  <canvas id="netCanvas" aria-hidden="true"></canvas>
+  <div class="container">
+    <div class="section-head reveal light-text"><span class="kicker">Belong</span><h2 id="communityTitle">MORE THAN A CHAPTER. A COMMUNITY.</h2><div class="bar"><i></i></div>
+    <p class="section-sub" id="communityText"></p></div>
+    <div class="pillars" id="pillars"></div>
+    <div class="center reveal"><a href="#contact" data-scroll class="btn btn-primary big">GET INVOLVED <span aria-hidden="true">→</span></a></div>
+  </div>
+</section>
+
+<!-- ============ DOCUMENTS ============ -->
+<section id="documents" class="section light">
+  <div class="container">
+    <div class="section-head reveal"><span class="kicker">Library</span><h2>DOCUMENT LIBRARY</h2><div class="bar"><i></i></div>
+    <p class="section-sub">Constitution, reports, minutes and official chapter documents.</p></div>
+    <div class="doc-filter reveal" id="docFilter"></div>
+    <div class="doc-list" id="docList"></div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="section dark soft">
+  <div class="container">
+    <div class="section-head reveal"><span class="kicker">Reach us</span><h2>CONTACT</h2><div class="bar"><i></i></div>
+    <p class="section-sub">Questions, partnerships, or just want to say hello? We'd love to hear from you.</p></div>
+    <div class="contact-grid">
+      <div class="contact-cards reveal" id="contactCards"></div>
+      <div class="contact-social reveal">
+        <h3>Follow the energy ⚡</h3>
+        <div class="socials" id="socials"></div>
+        <div class="visit-card"><h4>📍 Visit us</h4><p id="contactAddr"></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="brand"><span class="brand-mark"><svg viewBox="0 0 64 64"><path fill="#e63946" d="M32 2C32 2 12 26 12 40a20 20 0 0 0 40 0C52 26 32 2 32 2z"/><path fill="#fff" d="M32 22c0 0-9 11-9 18a9 9 0 0 0 18 0c0-7-9-18-9-18z"/></svg></span>
+      <span class="brand-text"><strong>SPE OOU</strong><small>Society of Petroleum Engineers</small></span></div>
+      <p>Olabisi Onabanjo University, Ago-Iwoye,<br>Ogun State, Nigeria</p>
+      <div class="socials small" id="socialsFooter"></div>
+    </div>
+    <div class="footer-links"><h4>Explore</h4><ul>
+      <li><a href="#about" data-scroll>About</a></li><li><a href="#history" data-scroll>History</a></li>
+      <li><a href="#executives" data-scroll>Executives</a></li><li><a href="#events" data-scroll>Events</a></li>
+    </ul></div>
+    <div class="footer-links"><h4>Resources</h4><ul>
+      <li><a href="#gallery" data-scroll>Gallery</a></li><li><a href="#achievements" data-scroll>Achievements</a></li>
+      <li><a href="#documents" data-scroll>Documents</a></li><li><a href="#contact" data-scroll>Contact</a></li>
+    </ul></div>
+    <div class="footer-contact"><h4>Contact</h4><p id="footerContact"></p>
+      <a class="admin-link" href="/admin">🔐 Admin Login</a></div>
+  </div>
+  <div class="footer-bottom"><p>© <span id="year"></span> SPE OOU — Society of Petroleum Engineers, Olabisi Onabanjo University Student Chapter. All rights reserved.</p></div>
+</footer>
+
+<!-- ============ LIGHTBOX ============ -->
+<div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Media viewer">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="Close">✕</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous">‹</button>
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Next">›</button>
+  <button class="lb-btn lb-full" id="lbFull" aria-label="Fullscreen">⛶</button>
+  <div class="lb-stage" id="lbStage"></div>
+  <p class="lb-cap" id="lbCap"></p>
+</div>
+
+<!-- ============ EVENT MODAL ============ -->
+<div id="eventModal" class="modal hidden" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <button class="modal-close" id="evClose" aria-label="Close">✕</button>
+    <div id="evBody"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="/js/app.js" defer></script>
+</body>
+</html>

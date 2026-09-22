@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — SPE OOU</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23e63946' d='M32 2C32 2 12 26 12 40a20 20 0 0 0 40 0C52 26 32 2 32 2z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginView" class="login-wrap hidden">
+  <div class="login-card">
+    <div class="login-mark">🛢️</div>
+    <h1>SPE OOU ADMIN</h1>
+    <p>Restricted area — authorized administrators only.</p>
+    <form id="loginForm">
+      <label>Email<input type="email" id="loginEmail" required autocomplete="username" placeholder="admin@speoou.org"></label>
+      <label>Password<input type="password" id="loginPass" required autocomplete="current-password" placeholder="••••••••"></label>
+      <p class="form-err hidden" id="loginErr"></p>
+      <button type="submit" class="abtn primary block" id="loginBtn">🔐 Log in</button>
+    </form>
+    <a href="/" class="back-link">← Back to website</a>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appView" class="hidden">
+  <aside id="sidebar">
+    <div class="side-brand"><span class="side-mark">🛢️</span><div><strong>SPE OOU</strong><small>Admin Dashboard</small></div></div>
+    <nav id="sideNav">
+      <button data-view="dashboard" class="active">📊 Dashboard</button>
+      <button data-view="about">📝 About</button>
+      <button data-view="history">🕰️ History</button>
+      <button data-view="executives">👔 Executives</button>
+      <button data-view="leaders">🏛️ Past Leaders</button>
+      <button data-view="events">📅 Events</button>
+      <button data-view="media">🖼️ Media Gallery</button>
+      <button data-view="achievements">🏆 Achievements</button>
+      <button data-view="documents">📄 Documents</button>
+      <button data-view="settings">⚙️ Website Settings</button>
+      <button data-view="account">👤 My Account</button>
+    </nav>
+    <div class="side-foot">
+      <span id="adminName">Admin</span>
+      <button id="logoutBtn" class="abtn danger-outline block">Logout</button>
+      <a href="/" class="back-link">← View website</a>
+    </div>
+    <button id="sideClose" aria-label="Close menu">✕</button>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <button id="sideOpen" aria-label="Open menu">☰</button>
+      <h2 id="viewTitle">Dashboard</h2>
+      <a href="/" target="_blank" class="abtn ghost sm">🌐 View site</a>
+    </header>
+    <main id="viewBody"></main>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal" class="modal hidden"><div class="modal-card"><div class="modal-head"><h3 id="modalTitle"></h3><button id="modalClose">✕</button></div><div id="modalBody"></div></div></div>
+<div id="toast" class="toast hidden"></div>
+
+<script src="/js/admin.js" defer></script>
+</body>
+</html>
